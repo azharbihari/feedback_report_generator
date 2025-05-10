@@ -137,7 +137,13 @@ This application processes student event data, sorts events by unit, assigns que
 
 3. Check the status by visiting the provided URL or making a GET request to it.
 
-4. Once completed, you'll receive links to the generated reports.
+4. Once completed, you'll receive links to the generated reports....
+### Installation
+
+1. Clone the repository:
+   ```bash
+   git clone [https://github.com/azharbihari/feedback_report_generator.git](https://github.com/azharbihari/feedback_report_generator.git)
+   cd feedback_report_generator
 
 ## Architecture
 
@@ -171,6 +177,47 @@ docker-compose exec web python manage.py test
 # Access Django shell
 docker-compose exec web python manage.py shell
 ```
+
+## Tests
+
+The application includes comprehensive unit tests to ensure the functionality of all components:
+
+- **API Endpoint Tests**: Tests for all REST endpoints (HTML/PDF generation, status checks, report retrieval)
+- **Task Processing Tests**: Tests for the asynchronous Celery task processing
+- **Report Generation Tests**: Tests for HTML and PDF report generation logic
+
+To run the tests:
+
+```bash
+# Run all tests
+docker-compose run --rm web python manage.py test
+
+# Run specific test module
+docker-compose run --rm web python manage.py test apps.assignment.tests
+
+# Run with verbose output
+docker-compose run --rm web python manage.py test -v 2
+```
+
+## Django Admin Interface
+
+To access the Django admin interface for monitoring tasks and reports:
+
+1. Create a superuser:
+```bash
+docker-compose exec web python manage.py createsuperuser
+```
+
+2. Follow the prompts to set up username, email, and password
+
+3. Access the admin interface at: http://localhost:8000/admin/
+
+4. Login with the superuser credentials created in step 1
+
+5. From the admin interface, you can:
+   - Monitor report generation tasks and their status
+   - View and manage generated reports
+   - Check error messages for failed tasks
 
 ## License
 

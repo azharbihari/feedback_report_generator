@@ -1,11 +1,11 @@
-
 services:
   web:
     build: .
     command: >
       sh -c "
-        python manage.py migrate &&
-        python manage.py runserver 0.0.0.0:8000
+        poetry run python manage.py makemigrations &&
+        poetry run python manage.py migrate &&
+        poetry run python manage.py runserver 0.0.0.0:8000
       "
     volumes:
       - .:/app
@@ -18,7 +18,7 @@ services:
       - redis
     restart: unless-stopped
     healthcheck:
-      test: ["CMD", "python", "manage.py", "check"]
+      test: ["CMD", "poetry", "run", "python", "manage.py", "check"]
       interval: 30s
       timeout: 10s
       retries: 5
@@ -29,20 +29,17 @@ services:
       - postgres_data:/var/lib/postgresql/data/
     env_file:
       - .env
-    environment:
-      - POSTGRES_PASSWORD=${DB_PASSWORD}
-      - POSTGRES_USER=${DB_USER}
-      - POSTGRES_DB=${DB_NAME}
     restart: unless-stopped
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${DB_USER} -d ${DB_NAME}"]
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
       interval: 10s
       timeout: 5s
       retries: 5
 
   redis:
     image: redis:7-alpine
-    command: redis-server --appendonly yes
+    ports:
+      - "6379:6379"
     volumes:
       - redis_data:/data
     restart: unless-stopped
@@ -54,7 +51,10 @@ services:
 
   celery:
     build: .
-    command: celery -A core worker --loglevel=info
+    command: >
+      sh -c "
+        poetry run celery -A core worker --loglevel=info
+      "
     volumes:
       - .:/app
     env_file:
@@ -62,34 +62,24 @@ services:
     depends_on:
       - db
       - redis
+      - web
     restart: unless-stopped
     healthcheck:
-      test: ["CMD", "celery", "-A", "core", "inspect", "ping"]
+      test: ["CMD", "poetry", "run", "celery", "-A", "core", "inspect", "ping"]
       interval: 30s
       timeout: 10s
       retries: 5
 
-  celery-beat:
-    build: .
-    command: celery -A core beat --loglevel=info
-    volumes:
-      - .:/app
-    env_file:
-      - .env
-    depends_on:
-      - redis
-      - celery
-    restart: unless-stopped
-
   flower:
     build: .
-    command: celery -A core flower --broker=${CELERY_BROKER_URL}
+    command: >
+      sh -c "
+        poetry run celery -A core flower --broker=redis://redis:6379/0 --address=0.0.0.0 --port=5555
+      "
     ports:
       - "5555:5555"
     env_file:
       - .env
-    environment:
-      - FLOWER_BASIC_AUTH=${FLOWER_USER}:${FLOWER_PASSWORD}
     depends_on:
       - redis
       - celery
