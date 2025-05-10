@@ -33,7 +33,7 @@ This application processes student event data, sorts events by unit, assigns que
 * **URL**: `/assignment/html`
 * **Method**: POST
 * **Input**: JSON payload containing student event data
-* **Output**: Returns a task\_id and status URL
+* **Output**: Returns a task_id and status URL
 * **Description**: Enqueues a task to process the payload asynchronously using Celery
 
 ### Check HTML Report Status
@@ -48,7 +48,7 @@ This application processes student event data, sorts events by unit, assigns que
 * **URL**: `/assignment/pdf`
 * **Method**: POST
 * **Input**: Same JSON payload as for HTML reports
-* **Output**: Returns a task\_id and status URL
+* **Output**: Returns a task_id and status URL
 * **Description**: Enqueues a Celery task to generate a PDF report
 
 ### Check PDF Report Status
@@ -76,7 +76,7 @@ This application processes student event data, sorts events by unit, assigns que
 1. Clone the repository:
 
    ```bash
-   git clone <repository-url>
+   git clone https://github.com/azharbihari/feedback_report_generator.git
    cd feedback_report_generator
    ```
 
@@ -93,7 +93,10 @@ This application processes student event data, sorts events by unit, assigns que
    # Celery settings
    CELERY_BROKER_URL=redis://redis:6379/0
    CELERY_RESULT_BACKEND=redis://redis:6379/0
-   
+
+   # Flower settings
+   FLOWER_USER=admin
+   FLOWER_PASSWORD=admin
    ```
 
 3. Build and start the containers:
@@ -146,16 +149,7 @@ This application processes student event data, sorts events by unit, assigns que
 
 3. Check the status by visiting the provided URL or making a GET request to it.
 
-4. Once completed, you'll receive links to the generated reports....
-
-### Installation
-
-1. Clone the repository:
-
-   ```bash
-   git clone https://github.com/azharbihari/feedback_report_generator.git
-   cd feedback_report_generator
-   ```
+4. Once completed, you'll receive links to the generated reports.
 
 ## Architecture
 
@@ -183,9 +177,6 @@ To run the project in development mode:
 ```bash
 # Start all services
 docker-compose up
-
-# Run tests
-docker-compose exec web python manage.py test
 
 # Access Django shell
 docker-compose exec web python manage.py shell
@@ -236,5 +227,4 @@ docker-compose exec web python manage.py createsuperuser
 
 ## License
 
-\[Specify your license here]
-
+[Specify your license here]
