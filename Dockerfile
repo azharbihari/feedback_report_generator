@@ -1,36 +1,22 @@
 FROM python:3.13-slim
 
-# Pin Poetry version for reproducibility
-ENV POETRY_VERSION=1.8.2
-ENV POETRY_HOME="/opt/poetry"
-ENV PATH="$POETRY_HOME/bin:$PATH"
+# Install system dependencies and Poetry
+RUN apt-get update && apt-get install -y curl \
+ && curl -sSL https://install.python-poetry.org | python3 - \
+ && apt-get remove -y curl && apt-get autoremove -y
+
+# Add Poetry to PATH
+ENV PATH="/root/.local/bin:$PATH"
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 
-# Install system dependencies and Poetry
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    build-essential \
-    libpq-dev \
-    curl \
-    && curl -sSL https://install.python-poetry.org | python3 - \
-    && apt-get purge -y --auto-remove curl \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
-
-# Use Poetry's recommended install path and disable venv creation for Docker
-RUN poetry config virtualenvs.create false
-
+# Set working directory
 WORKDIR /app
 
-# Copy only dependency files first for better cache usage
+# Install Python dependencies
 COPY pyproject.toml poetry.lock /app/
+RUN poetry config virtualenvs.create false \
+ && poetry install --no-interaction --no-root
 
-# Install dependencies
-RUN poetry install --no-interaction --no-root
-
-# Now copy the rest of the application
+# Copy project files
 COPY . /app/
-
-# (Optional) For production, consider running as a non-root user
-# RUN adduser --disabled-password --gecos '' appuser && chown -R appuser /app
-# USER appuser
