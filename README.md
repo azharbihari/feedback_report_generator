@@ -93,10 +93,7 @@ This application processes student event data, sorts events by unit, assigns que
    # Celery settings
    CELERY_BROKER_URL=redis://redis:6379/0
    CELERY_RESULT_BACKEND=redis://redis:6379/0
-
-   # Flower settings
-   FLOWER_USER=admin
-   FLOWER_PASSWORD=admin
+   
    ```
 
 3. Build and start the containers:
@@ -156,7 +153,7 @@ This application processes student event data, sorts events by unit, assigns que
 1. Clone the repository:
 
    ```bash
-   git clone [https://github.com/azharbihari/feedback_report_generator.git](https://github.com/azharbihari/feedback_report_generator.git)
+   git clone https://github.com/azharbihari/feedback_report_generator.git
    cd feedback_report_generator
    ```
 
