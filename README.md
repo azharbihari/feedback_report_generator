@@ -5,6 +5,7 @@ A Django-based service that processes student event data to generate HTML and PD
 ## Table of Contents
 
 * [Overview](#overview)
+* [Demo](#demo)
 * [Features](#features)
 * [Tech Stack](#tech-stack)
 * [Project Structure](#project-structure)
@@ -21,7 +22,10 @@ A Django-based service that processes student event data to generate HTML and PD
 * [Troubleshooting](#troubleshooting)
 * [Contributing](#contributing)
 * [Contact Information](#contact-information)
-* [Demo](#demo)
+
+## Overview
+
+This application processes student event data, sorts events by unit, assigns question aliases (Q1, Q2, etc.), and generates reports showing the order of units answered by students. The system uses Celery for asynchronous processing, Redis as the message broker, and PostgreSQL for storing reports.
 
 ## Demo
 
@@ -30,10 +34,6 @@ Watch the demo video to see the Feedback Report Generator in action:
 [![Feedback Report Generator Demo](https://img.youtube.com/vi/zao_iABDGR8/0.jpg)](https://youtu.be/zao_iABDGR8)
 
 [Watch Demo Video](https://youtu.be/zao_iABDGR8)
-
-## Overview
-
-This application processes student event data, sorts events by unit, assigns question aliases (Q1, Q2, etc.), and generates reports showing the order of units answered by students. The system uses Celery for asynchronous processing, Redis as the message broker, and PostgreSQL for storing reports.
 
 ## Features
 
@@ -358,7 +358,3 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 * **Email**: azharbihari@outlook.com
 * **GitHub**: [github.com/azharbihari](https://github.com/azharbihari)
 * **LinkedIn**: [linkedin.com/in/azharbihari](https://linkedin.com/in/azharbihari)
-
-<!-- ## License
-
-This project is licensed under the MIT License - see the LICENSE file for details. -->
