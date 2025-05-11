@@ -21,7 +21,15 @@ A Django-based service that processes student event data to generate HTML and PD
 * [Troubleshooting](#troubleshooting)
 * [Contributing](#contributing)
 * [Contact Information](#contact-information)
-* [License](#license)
+* [Demo](#demo)
+
+## Demo
+
+Watch the demo video to see the Feedback Report Generator in action:
+
+[![Feedback Report Generator Demo](https://img.youtube.com/vi/zao_iABDGR8/0.jpg)](https://youtu.be/zao_iABDGR8)
+
+[Watch Demo Video](https://youtu.be/zao_iABDGR8)
 
 ## Overview
 
