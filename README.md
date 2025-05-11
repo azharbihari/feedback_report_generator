@@ -15,6 +15,7 @@ A Django-based service that processes student event data to generate HTML and PD
 * [Architecture](#architecture)
 * [Database Schema](#database-schema)
 * [Monitoring](#monitoring)
+* [Admin Access (Optional)](#admin-access-optional)
 * [Development](#development)
 * [Tests](#tests)
 * [Troubleshooting](#troubleshooting)
@@ -201,10 +202,6 @@ curl -X POST http://localhost:8000/assignment/pdf \
    # Celery settings
    CELERY_BROKER_URL=redis://redis:6379/0
    CELERY_RESULT_BACKEND=redis://redis:6379/0
-
-   # Flower settings
-   FLOWER_USER=admin
-   FLOWER_PASSWORD=admin
    ```
 
 3. Build and start the containers:
@@ -277,6 +274,27 @@ The application uses a modular architecture with:
 ## Monitoring
 
 Access the Flower dashboard at [http://localhost:5555/](http://localhost:5555/) to monitor Celery tasks.
+
+## Admin Access (Optional)
+
+To access the Django admin interface for monitoring tasks and reports:
+
+1. Create a superuser:
+
+   ```bash
+   docker compose exec web python manage.py createsuperuser
+   ```
+
+2. Follow the prompts to set up username, email, and password
+
+3. Access the admin interface at: [http://localhost:8000/admin/](http://localhost:8000/admin/)
+
+4. Login with the superuser credentials created in step 1
+
+5. From the admin interface, you can:
+   * Monitor report generation tasks and their status
+   * View and manage generated reports
+   * Check error messages for failed tasks
 
 ## Development
 
